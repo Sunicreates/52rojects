@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,8 +13,8 @@ const Admin = () => {
   const [projects, setProjects] = useState<any[]>([]);
   const [filteredProjects, setFilteredProjects] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [weekFilter, setWeekFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const [weekFilter, setWeekFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [user, setUser] = useState<any>(null);
   const navigate = useNavigate();
 
@@ -66,12 +65,12 @@ const Admin = () => {
     }
 
     // Week filter
-    if (weekFilter) {
+    if (weekFilter && weekFilter !== 'all') {
       filtered = filtered.filter(project => project.week === parseInt(weekFilter));
     }
 
     // Status filter
-    if (statusFilter) {
+    if (statusFilter && statusFilter !== 'all') {
       filtered = filtered.filter(project => project.status === statusFilter);
     }
 
@@ -237,7 +236,7 @@ const Admin = () => {
                   <SelectValue placeholder="Filter by week" />
                 </SelectTrigger>
                 <SelectContent className="bg-gray-700 border-green-500/30">
-                  <SelectItem value="">All weeks</SelectItem>
+                  <SelectItem value="all">All weeks</SelectItem>
                   {Array.from({ length: 52 }, (_, i) => i + 1).map(week => (
                     <SelectItem key={week} value={week.toString()}>
                       Week {week}
@@ -251,7 +250,7 @@ const Admin = () => {
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
                 <SelectContent className="bg-gray-700 border-green-500/30">
-                  <SelectItem value="">All statuses</SelectItem>
+                  <SelectItem value="all">All statuses</SelectItem>
                   <SelectItem value="Under Review">Under Review</SelectItem>
                   <SelectItem value="Approved">Approved</SelectItem>
                   <SelectItem value="Rejected">Rejected</SelectItem>
@@ -262,8 +261,8 @@ const Admin = () => {
                 variant="outline"
                 onClick={() => {
                   setSearchTerm('');
-                  setWeekFilter('');
-                  setStatusFilter('');
+                  setWeekFilter('all');
+                  setStatusFilter('all');
                 }}
                 className="border-gray-500 text-gray-300 hover:bg-gray-700"
               >
